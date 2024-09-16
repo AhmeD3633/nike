@@ -239,7 +239,7 @@ body{
 }
 
 .slide {
-  animation: slide-in 0.1s forwards;
+  animation: slide-in 0.4s forwards;
 }
 
 @keyframes slide-in {
