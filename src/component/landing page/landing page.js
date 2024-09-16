@@ -1,21 +1,37 @@
-import React, { useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import Airforce from "../../assets/images/Airforce.png";
 import AirForceRed from "../../assets/images/air-force-1.png";
 import AirForceWhite from "../../assets/images/air-force-1-07-mens-shoes-jBrhbr (1).png";
 import { Container, Row, Col } from "react-bootstrap";
 import NikeLogo1 from "../../assets/images/nike_logo_2-removebg-preview.png";
-import { motion } from "framer-motion";
 
 const LandingPage = () => {
   const [img, setImg] = useState(Airforce);
   const [animate, setAnimate] = useState(false);
+  const slideImg = [Airforce, AirForceRed, AirForceWhite];
+  const intervalRef = useRef(null);
+
+  useEffect(() => {
+    let index = 1;
+
+    const slideAnimation = () => {
+      setAnimate(true);
+      setImg(slideImg[index]);
+      setTimeout(() => setAnimate(false), 500);
+      index = (index + 1) % slideImg.length;
+    };
+    intervalRef.current = setInterval(slideAnimation, 2000);
+
+    return () => clearInterval(intervalRef.current);
+  }, []);
 
   const changeImg = (newImg) => {
+    clearInterval(intervalRef.current);
     setAnimate(true);
+    setImg(newImg);
     setTimeout(() => {
-      setImg(newImg);
       setAnimate(false);
-    },500);
+    }, 500);
   };
 
   return (
@@ -46,14 +62,14 @@ const LandingPage = () => {
               {/* <div className="icons"></div> */}
             </Row>
           </Col>
-          <Col  className="middle">
+          <Col className="middle">
             <Row className="headline">
               <h1>Air-forec</h1>
               <h4>Explore the Nike Air Force 1 '07 Men's Shoes</h4>
               <p>Lorem ipsum dolor sit amet </p>
             </Row>
 
-            <Row className={`image-container ${animate ? 'slide' : ''}`}>
+            <Row className={`image-container ${animate ? "slide" : ""}`}>
               <img src={img} />
             </Row>
 
